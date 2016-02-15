@@ -5,6 +5,7 @@ ruby '2.1.2'
 gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'omniauth-ravelry'
+gem 'oauth'
 
 group :development do
   gem 'pry'

@@ -28,30 +28,30 @@ configure do
 end
 
 get '/' do
-  session[:redirect] = params['redirect'] unless current_user?
-  redirect to('/auth/ravelry') unless current_user?
-  set_user unless @user
-  json @user
+  session[:redirect] = params['redirect']
+  redirect to('/auth/ravelry')
 end
 
 get '/logout' do
-  clear_session
+  clear_session(params['username'])
 end
 
 get '/session' do
-  check_session
+  check_session(params['username'], params['token'])
 end
 
 get '/auth/ravelry/callback' do
-  set_session
-  set_user
+  user = set_session
   redirect_url = session[:redirect]
   session[:redirect] = nil
-  user_params = "user=#{@user[:username]}&name=#{@user[:first_name]}"
+  user_params = "user=#{user[:username]}&name=#{user[:first_name]}&token=#{user[:token]}"
   redirect to "#{redirect_url}?#{user_params}"
 end
 
 get '/api/*' do
+  # pass username and token
+  # verify that the token matches the username current session
+  # make call using secret
   url = params['splat'][0]
   uri = URI("#{URL_BASE}://api.ravelry.com/#{url}")
   req = Net::HTTP::Get.new(uri)

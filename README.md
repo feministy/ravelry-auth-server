@@ -1,3 +1,5 @@
-# ravelry-omniauth-server
+# ravelry-auth-server
 
-A small, lightweight server for handling your oauth requests to Ravelry and the resulting sessions.
+A small, lightweight server for handling your authenticated requests to Ravelry and the resulting sessions.
+
+Requires Ravelry API keys as environment variables to successfully complete calls.

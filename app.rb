@@ -28,6 +28,7 @@ configure do
 end
 
 get '/' do
+  session[:redirect] = params['redirect'] unless current_user?
   redirect to('/auth/ravelry') unless current_user?
   set_user unless @user
   json @user
@@ -44,7 +45,10 @@ end
 get '/auth/ravelry/callback' do
   set_session
   set_user
-  json @user
+  redirect_url = session[:redirect]
+  session[:redirect] = nil
+  user_params = "user=#{@user[:username]}&name=#{@user[:first_name]}"
+  redirect to "#{redirect_url}?#{user_params}"
 end
 
 get '/api/*' do
